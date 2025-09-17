@@ -1,38 +1,47 @@
 from PIL import Image, UnidentifiedImageError
 import numpy as np
+import sys
+
 
 def ft_load(path: str):
     """
-    Loads a JPEG/JPG image, prints its shape and pixel RGB values,
-    and returns the image as a NumPy array.
+    Load an image from the given path and convert it to a NumPy array.
+
+    - Supports only JPEG or JPG images.
+    - Prints the shape of the loaded image.
+    - Exits the program with an error message if the file is not found,
+      is not a valid image, or has an unsupported format.
+
+    Args:
+        path (str): The file path to the image.
+
+    Returns:
+        np.ndarray: A NumPy array representing the image.
     """
     try:
-        # Open the image
         im = Image.open(path)
-        
-        # Check format
         if im.format not in ("JPEG", "JPG"):
             raise ValueError("Format must be JPEG or JPG")
-        
-        # Convert to NumPy array
+
         imgArr = np.array(im)
-        
-        # Print shape
-        print("The shape of image is:", imgArr.shape)
-        
-        # Print first 3 and last 3 rows of pixels
-        print(imgArr[:3])
-        print(imgArr[-3:])
-        
-        # Return the array
+        print(f"The shape of image is: {imgArr.shape}")
         return imgArr
 
     except FileNotFoundError:
         print(f"Error: File '{path}' not found")
-        return None
+        sys.exit(1)
     except UnidentifiedImageError:
         print(f"Error: File '{path}' is not a valid image")
-        return None
+        sys.exit(1)
     except ValueError as e:
         print(f"Error: {e}")
-        return None
+        sys.exit(1)
+
+# tester.py:
+
+# from load_image import ft_load
+# import numpy as np
+# imgArr = ft_load("landscape.jpg")
+# np.set_printoptions(edgeitems=3, threshold=4)
+# print(imgArr[:1])
+# print(imgArr[-1:])

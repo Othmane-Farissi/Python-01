@@ -1,40 +1,21 @@
-from PIL import Image, UnidentifiedImageError
-import numpy as np
+from load_image import ft_load
+import matplotlib.pyplot as plt
 
-def ft_load(path: str):
 
-    try:
-        
-        im = Image.open(path)
-        
-        if im.format not in ("JPEG", "JPG"):
-            raise ValueError("Format must be JPEG or JPG")
-        
-        imgArr = np.array(im)
-        
-        print("The shape of image is:", imgArr.shape)
-        
-        print(imgArr[:3])
-        print(imgArr[-3:])
-        
-        return imgArr
+def ft_zoom(path):
 
-    except FileNotFoundError:
-        print(f"Error: File '{path}' not found")
-        return None
-    except UnidentifiedImageError:
-        print(f"Error: File '{path}' is not a valid image")
-        return None
-    except ValueError as e:
-        print(f"Error: {e}")
-        return None
+    arr = ft_load(path)
+    zomed = arr[:400, :400]
 
-def zoom(arr):
+    zomed_one_channel = zomed[:, :, 0]
 
-    zomed =  arr[:400, :400]
+    print("New shape after slicing: ", zomed_one_channel.shape)
 
-    zomed_one_channel = [:, :, 0]
+    plt.imshow(zomed_one_channel, cmap="gray")
+    plt.title("zomed")
+    plt.axis("off")
+    plt.show()
 
-    print("New shape after slicing: ", zoomed_one_channel.shape)
-    print(zomed_one_channel[:3])
-    print(zomed_one_channel[-3:])
+
+if __name__ == "__main__":
+    ft_zoom("animal.jpeg")
